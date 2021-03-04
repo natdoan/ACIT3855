@@ -1,0 +1,9 @@
+version: 1
+calorie_intake:
+  url: http://localhost:8090/reports/calorie-intake
+weight:
+  url: http://localhost:8090/reports/weight
+events:
+  hostname: acit3855-kafka.westus2.cloudapp.azure.com
+  port: 9092
+  topic: events

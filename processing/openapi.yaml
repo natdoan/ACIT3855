@@ -1,0 +1,70 @@
+openapi: 3.0.0
+
+info:
+  description: This API receives reports from calorie tracking devices.
+  version: "1.0.0"
+  title: Report API
+  contact:
+    email: ndoan6@my.bcit.ca
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: devices
+    description: Operations available to calorie tracking devices.
+
+paths:
+  /stats:
+    get:
+      summary: Gets the event stats
+      operationId: app.get_stats
+      description: Gets Calorie Intake and Weight processed statistics
+      responses:
+        '200':
+          description: Successfully returned a list of calorie intake events
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ReportStats'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    ReportStats:
+      required:
+        - num_ci_reports
+        - max_ci_report
+        - min_ci_report
+        - num_w_reports
+        - max_w_report
+        - min_w_report
+      properties:
+        num_ci_reports:
+          type: integer
+          example:  1000
+        max_ci_report:
+          type: integer
+          example: 5000
+        min_ci_report:
+          type: integer
+          example: 100
+        num_w_reports:
+          type: integer
+          example: 1000
+        max_w_report:
+          type: integer
+          example: 500
+        min_w_report:
+          type: integer
+          example: 100
+      type: object

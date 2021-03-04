@@ -1,0 +1,121 @@
+openapi: 3.0.0
+
+info:
+  description: This API provides audit info
+  version: "1.0.0"
+  title: Audit API
+  contact:
+    email: ndoan6@my.bcit.ca
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+paths:
+  /reports/calorie-intake:
+    get:
+      summary: gets calorie intake report from history
+      operationId: app.get_calorie_intake_report
+      description: Gets calorie intake report from event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the CI at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Succesfully returned a calorie intake event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CalorieIntake'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+
+  /reports/weight:
+    get:
+      summary: gets weight report from history
+      operationId: app.get_weight_report
+      description: Gets weight report from event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the W at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Succesfully returned a weight event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Weight'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components:
+  schemas:
+    CalorieIntake:
+      required:
+        - client_id
+        - device_id
+        - calorie_intake
+        - timestamp
+      properties:
+        client_id:
+          type: string
+          example: A01079258
+        device_id:
+          type: string
+          example: B01079258
+        calorie_intake:
+          type: integer
+          example: 1250
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-01-14T10:32:48Z'
+      type: object
+
+    Weight:
+      required:
+        - client_id
+        - device_id
+        - weight
+        - timestamp
+      properties:
+        client_id:
+          type: string
+          example: A01079258
+        device_id:
+          type: string
+          example: B01079258
+        weight:
+          type: integer
+          example: 148
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-01-14T10:32:48Z'
+      type: object
+

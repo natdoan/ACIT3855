@@ -1,0 +1,100 @@
+openapi: 3.0.0
+
+info:
+  description: This API receives reports from calorie tracking devices.
+  version: "1.0.0"
+  title: Report API
+  contact:
+    email: ndoan6@my.bcit.ca
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: devices
+    description: Operations available to calorie tracking devices.
+  
+paths:
+  /reports/calorie-intake:
+    post:
+      tags:
+      - devices
+      summary: reports calorie intake
+      operationId: app.report_calorie_intake
+      description: Adds new calorie intake reading to system
+      responses:
+        '201':
+          description: item created
+        '401':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalorieIntake'
+        description: Reading item to add
+  
+  /reports/weight:
+    post:
+      tags:
+        - devices
+      summary: reports weight
+      operationId: app.report_weight
+      description: Adds new weight reading to the system
+      responses:
+        '201':
+          description: item created
+        '401':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Weight'
+        description: Reading item to add
+      
+components:
+  schemas:
+    CalorieIntake:
+      required:
+      - client_id
+      - device_id
+      - calorie_intake
+      - timestamp
+      properties:
+        client_id:
+          type: string
+          example: A01079258
+        device_id:
+          type: string
+          example: B01079258
+        calorie_intake:
+          type: integer
+          example: 1250
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-01-14T10:32:48Z'
+      type: object
+        
+    Weight:
+      required:
+      - client_id
+      - device_id
+      - weight
+      - timestamp
+      properties:
+        client_id:
+          type: string
+          example: A01079258
+        device_id:
+          type: string
+          example: B01079258
+        weight:
+          type: integer
+          example: 148
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-01-14T10:32:48Z'
+      type: object
+
