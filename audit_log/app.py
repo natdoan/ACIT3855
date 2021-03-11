@@ -1,16 +1,16 @@
 import json
-import os.path
+#import os.path
 import connexion
-import requests
-from apscheduler.schedulers.background import BackgroundScheduler
-from connexion import NoContent
-import datetime
+#import requests
+#from apscheduler.schedulers.background import BackgroundScheduler
+#from connexion import NoContent
+#import datetime
 
 import yaml
 import logging.config
 from pykafka import KafkaClient
-from pykafka.common import OffsetType
-from threading import Thread
+#from pykafka.common import OffsetType
+#from threading import Thread
 
 with open('app_conf.yaml', 'r') as f:
     app_config = yaml.safe_load(f.read())
