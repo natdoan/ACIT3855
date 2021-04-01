@@ -6,6 +6,7 @@ import datetime
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import and_
 from base import Base
 
 from pykafka import KafkaClient
@@ -96,14 +97,16 @@ def report_weight(body):
     return NoContent, 201
 
 
-def get_calorie_intake_reports(timestamp):
+def get_calorie_intake_reports(start_timestamp, end_timestamp):
 
     session = DB_SESSION()
 
-    timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    start_timestamp_datetime = datetime.datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
 
-    reports = session.query(CalorieIntake).filter(CalorieIntake.date_created >= timestamp_datetime)
-
+    #reports = session.query(CalorieIntake).filter(CalorieIntake.date_created >= timestamp_datetime)
+    reports = session.query(CalorieIntake).filter( and_(CalorieIntake.date_created >= start_timestamp_datetime, CalorieIntake.date_created < end_timestamp_datetime))
+    
     results_list = []
 
     for report in reports:
@@ -116,14 +119,16 @@ def get_calorie_intake_reports(timestamp):
     return results_list, 200
 
 
-def get_weight_reports(timestamp):
+def get_weight_reports(start_timestamp, end_timestamp):
 
     session = DB_SESSION()
 
-    timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    start_timestamp_datetime = datetime.datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
 
-    reports = session.query(Weight).filter(Weight.date_created >= timestamp_datetime)
-
+    #reports = session.query(Weight).filter(Weight.date_created >= timestamp_datetime)
+    reports = session.query(Weight).filter( and_(Weight.date_created >= start_timestamp_datetime, Weight.date_created < end_timestamp_datetime))
+    
     results_list = []
 
     for report in reports:

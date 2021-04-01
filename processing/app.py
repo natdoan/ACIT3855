@@ -61,8 +61,9 @@ def populate_stats():
 
         stats_json.close()
         timestamp = stats["last_updated"]
+        current_timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    response = requests.get(app_config["eventstore"]["url"] + "/calorie-intake?timestamp=" + timestamp)
+    response = requests.get(app_config["eventstore"]["url"] + "/calorie-intake?start_timestamp=" + timestamp + "&end_timestamp=" + current_timestamp)
 
     if response.status_code == 200:
         if "num_ci_reports" in stats.keys():
@@ -86,7 +87,7 @@ def populate_stats():
     else:
         logger.error("No reports processed due to error: " + str(response.status_code))
 
-    response = requests.get(app_config["eventstore"]["url"] + "/weight?timestamp=" + timestamp)
+    response = requests.get(app_config["eventstore"]["url"] + "/weight?start_timestamp=" + timestamp + "&end_timestamp=" + current_timestamp)
 
     if response.status_code == 200:
         if "num_w_reports" in stats.keys():
