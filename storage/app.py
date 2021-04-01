@@ -114,7 +114,7 @@ def get_calorie_intake_reports(start_timestamp, end_timestamp):
 
     session.close()
 
-    logger.info("Query for Calorie Intake reports after %s returns %d results" % (timestamp, len(results_list)))
+    logger.info("Query for Calorie Intake reports after %s returns %d results" % (end_timestamp, len(results_list)))
 
     return results_list, 200
 
@@ -136,7 +136,7 @@ def get_weight_reports(start_timestamp, end_timestamp):
 
     session.close()
 
-    logger.info("Query for Weight reports after %s returns %d results" % (timestamp, len(results_list)))
+    logger.info("Query for Weight reports after %s returns %d results" % (end_timestamp, len(results_list)))
 
     return results_list, 200
 
