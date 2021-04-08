@@ -52,6 +52,7 @@ while retry_count < app_config["events"]["max_try"]:
     try:
         client = KafkaClient(hosts=hostname)
         topic = client.topics[str.encode(app_config["events"]["topic"])]
+        producer = topic.get_sync_producer()
         logger.info("Connected to Kafka!")
         break
     except:
@@ -69,7 +70,7 @@ def report_calorie_intake(body):
     #topic_name = app_config["events"]["topic"]
     #topic = client.topics[str.encode(topic_name)]
 
-    producer = topic.get_sync_producer()
+    #producer = topic.get_sync_producer()
     logger.info("this inst working")
     msg = {"type": "ci",
            "datetime":
@@ -94,7 +95,7 @@ def report_weight(body):
     #client = KafkaClient(hosts=hostname)
     #topic_name = app_config["events"]["topic"]
     #topic = client.topics[str.encode(topic_name)]
-    producer = topic.get_sync_producer()
+    #producer = topic.get_sync_producer()
 
     msg = {"type": "w",
            "datetime":
