@@ -111,7 +111,8 @@ def populate_stats():
     else:
         logger.error("No reports processed due to error: " + str(response.status_code))
 
-    stats["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    #stats["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    stats["last_updated"] = current_timestamp
 
     stats_json = open(app_config["datastore"]["filename"], "w")
 
