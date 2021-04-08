@@ -3,6 +3,7 @@ import os.path
 import connexion
 from connexion import NoContent
 import datetime
+import time
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -145,11 +146,18 @@ def process_messages():
 
     hostname = "%s:%d" % (app_config["events"]["hostname"],
                           app_config["events"]["port"])
-    client = KafkaClient(hosts=hostname)
-    topic = client.topics[str.encode(app_config["events"]["topic"])]
+    retry_count = 0
 
-    consumer = topic.get_simple_consumer(consumer_group=b'event_group',
-                                         reset_offset_on_start=False,
+    while retry_count < app_config["events"]["max_try"]:
+        logger.info("Connecting to Kafka.")
+        try:
+            client = KafkaClient(hosts=hostname)
+            topic = client.topics[str.encode(app_config["events"]["topic"])]
+            logger.info("Connected to Kafka!")
+        except:
+            retry_count = retry_count + 1
+            logger.error("Connection failed. Retrying in 5 seconds.")
+            time.sleep(app_config["events"]["sleep"])
                                          auto_offset_reset=OffsetType.LATEST)
 
     for msg in consumer:
