@@ -146,6 +146,7 @@ def process_messages():
 
     hostname = "%s:%d" % (app_config["events"]["hostname"],
                           app_config["events"]["port"])
+
     retry_count = 0
 
     while retry_count < app_config["events"]["max_try"]:
@@ -158,6 +159,9 @@ def process_messages():
             retry_count = retry_count + 1
             logger.error("Connection failed. Retrying in 5 seconds.")
             time.sleep(app_config["events"]["sleep"])
+
+    consumer = topic.get_simple_consumer(consumer_group=b'event_group',
+                                         reset_offset_on_start=False,
                                          auto_offset_reset=OffsetType.LATEST)
 
     for msg in consumer:
