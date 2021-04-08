@@ -53,6 +53,7 @@ while retry_count < app_config["events"]["max_try"]:
         client = KafkaClient(hosts=hostname)
         topic = client.topics[str.encode(app_config["events"]["topic"])]
         logger.info("Connected to Kafka!")
+        break
     except:
         retry_count = retry_count + 1
         logger.error("Connection failed. Retrying in 5 seconds.")
